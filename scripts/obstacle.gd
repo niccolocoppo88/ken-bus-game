@@ -63,22 +63,46 @@ func _apply_level_visuals() -> void:
 	if _animated_sprite:
 		_animated_sprite.play(obstacle_type)
 	elif _sprite:
-		# TODO: load appropriate texture for obstacle_type
-		pass
+		# Load appropriate texture for obstacle_type
+		_apply_sprite_texture()
 
 
 func _get_obstacle_type_for_level() -> String:
 	var types: Array[String] = []
 	match _level_name:
 		"scuola":
-			types = ["car", "barrier", "cone"]
+			types = ["car", "barrier", "cone", "ball", "backpack"]
 		"citta":
-			types = ["car", "taxi", "barrier", "billboard"]
+			types = ["car", "taxi", "barrier", "billboard", "truck"]
 		"bosco":
-			types = ["tree", "rock", "barrier"]
+			types = ["tree", "rock", "barrier", "backpack"]
 		"luna":
-			types = ["meteor", "crater", "satellite"]
+			types = ["meteor", "crater", "satellite", "asteroid", "rock"]
 	return types[randi() % types.size()]
+
+
+func _apply_sprite_texture() -> void:
+	# Map obstacle_type to sprite texture
+	var texture_map = {
+		"car": "res://assets/sprites/obstacles/car_red.png",
+		"taxi": "res://assets/sprites/obstacles/car_green.png",
+		"truck": "res://assets/sprites/obstacles/truck.png",
+		"barrier": "res://assets/sprites/obstacles/ball.png",
+		"cone": "res://assets/sprites/obstacles/ball.png",
+		"billboard": "res://assets/sprites/obstacles/ball.png",
+		"ball": "res://assets/sprites/obstacles/ball.png",
+		"backpack": "res://assets/sprites/obstacles/backpack.png",
+		"tree": "res://assets/sprites/obstacles/tree.png",
+		"rock": "res://assets/sprites/obstacles/rock.png",
+		"meteor": "res://assets/sprites/obstacles/asteroid.png",
+		"asteroid": "res://assets/sprites/obstacles/asteroid.png",
+		"crater": "res://assets/sprites/obstacles/crater.png",
+		"satellite": "res://assets/sprites/obstacles/asteroid.png"
+	}
+	if texture_map.has(obstacle_type) and _sprite:
+		var tex = load(texture_map[obstacle_type])
+		if tex:
+			_sprite.texture = tex
 
 
 func destroy() -> void:
