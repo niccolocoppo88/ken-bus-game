@@ -68,6 +68,7 @@ var _bus: CharacterBody2D = null
 var _hud: CanvasLayer = null
 
 const LEVELS: Array[String] = ["scuola", "citta", "bosco", "luna"]
+const LEVEL_SCORES: Array[int] = [0, 500, 1500, 3000]
 
 # ============================================================================
 # LIFECYCLE
@@ -161,8 +162,6 @@ func _start_level(level_name: String) -> void:
 
 
 func _update_level_background() -> void:
-	# TODO: swap background sprite based on _level_name
-	# For now: modulate background color
 	var bg = $Background
 	if bg:
 		match _level_name:
@@ -174,6 +173,53 @@ func _update_level_background() -> void:
 				bg.modulate = Color(0.45, 0.75, 0.45)  # green forest
 			"luna":
 				bg.modulate = Color(0.4, 0.35, 0.6)   # purple space
+		if bg.has_method("set_level"):
+			bg.set_level(_level_name)
+
+func _update_spawners_level() -> void:
+	var obstacle_spawner = $ObstacleSpawner
+	var kid_spawner = $KidSpawner
+	if obstacle_spawner and obstacle_spawner.has_method("set_level"):
+		obstacle_spawner.set_level(_level_name)
+	if kid_spawner and kid_spawner.has_method("set_level"):
+		kid_spawner.set_level(_level_name)
+
+func _check_level_advancement() -> void:
+	var next_idx = _current_level_index + 1
+	if next_idx >= LEVELS.size():
+		_trigger_victory()
+		return
+	if _score >= LEVEL_SCORES[next_idx]:
+		_advance_to_level(next_idx)
+
+func _advance_to_level(idx: int) -> void:
+	_current_level_index = idx
+	_level_name = LEVELS[idx]
+	# Clear all active objects
+	for obs in _obstacle_pool:
+		if obs.visible:
+			_release_obstacle(obs)
+	for kid in _kids_pool:
+		if kid.visible:
+			_release_kid(kid)
+	for entry in _powerup_pool:
+		var p = entry[0]
+		if is_instance_valid(p):
+			p.queue_free()
+	_powerup_pool.clear()
+	# Reset timers
+	_obstacle_spawn_timer = 1.5
+	_kid_spawn_timer = 0.5
+	_powerup_spawn_timer = randf_range(5.0, 10.0)
+	# Apply new level
+	_update_level_background()
+	_update_spawners_level()
+	level_complete.emit(_level_name)
+	_change_state(GameState.LEVEL_COMPLETE)
+
+func _trigger_victory() -> void:
+	_current_level_index = 0
+	_change_state(GameState.GAME_OVER)
 
 
 func _update_difficulty() -> void:
@@ -195,15 +241,11 @@ func _check_level_complete() -> void:
 
 
 func _advance_level() -> void:
-	_current_level_index += 1
-	if _current_level_index >= LEVELS.size():
-		# All levels complete — show final victory
-		_current_level_index = 0
-		_change_state(GameState.GAME_OVER)
+	# Called when time runs out with enough kids
+	if _kids_collected >= kids_to_complete:
+		_advance_to_level(_current_level_index + 1)
 	else:
-		_level_name = LEVELS[_current_level_index]
-		level_complete.emit(_level_name)
-		_change_state(GameState.LEVEL_COMPLETE)
+		_change_state(GameState.GAME_OVER)
 
 
 # ============================================================================
@@ -367,6 +409,7 @@ func _on_kid_collected() -> void:
 	_score += 100
 	kids_collected_changed.emit(_kids_collected)
 	score_changed.emit(_score)
+	_check_level_advancement()
 
 
 func _on_obstacle_destroyed() -> void:
@@ -429,4 +472,5 @@ func start_game() -> void:
 		score_changed.emit(_score)
 		lives_changed.emit(_lives)
 		kids_collected_changed.emit(_kids_collected)
+		_update_spawners_level()
 		_change_state(GameState.PLAYING)
