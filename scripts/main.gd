@@ -445,9 +445,14 @@ func _show_game_over_screen() -> void:
 
 func _show_level_complete_screen() -> void:
 	get_tree().paused = false
-	# TODO: show level complete tally, auto-advance after delay
+	# Show level complete info via HUD if available
+	var hud = $HUD
+	if hud and hud.has_method("show_level_complete"):
+		hud.show_level_complete(_level_name, _score, _kids_collected)
+	# Auto-advance after delay
 	await get_tree().create_timer(3.0).timeout
-	_change_state(GameState.PLAYING)
+	if _state == GameState.LEVEL_COMPLETE:
+		_change_state(GameState.PLAYING)
 
 
 # ============================================================================
