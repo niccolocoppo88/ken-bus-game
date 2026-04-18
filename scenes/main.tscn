@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmain001"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://dbus001" path="res://scenes/bus/bus.tscn" id="2_bus"]
+[ext_resource type="PackedScene" uid="uid://dobst001" path="res://scenes/obstacle/obstacle.tscn" id="3_obst"]
+[ext_resource type="PackedScene" uid="uid://dkid001" path="res://scenes/kid/kid.tscn" id="4_kid"]
+[ext_resource type="PackedScene" uid="uid://dpow001" path="res://scenes/powerup/powerup.tscn" id="5_pow"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+bus_scene = ExtResource("2_bus")
+obstacle_scene = ExtResource("3_obst")
+kid_scene = ExtResource("4_kid")
+powerup_scene = ExtResource("5_pow")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.53, 0.81, 0.92, 1)
+
+[node name="Road" type="ColorRect" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1280.0
+offset_top = 450.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 0
+color = Color(0.25, 0.25, 0.25, 1)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="KidsDisplay" type="HBoxContainer" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -120.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="Icon" type="Label" parent="HUD/KidsDisplay"]
+text = "👦"
+
+[node name="Count" type="Label" parent="HUD/KidsDisplay"]
+text = "0"
+
+[node name="ScoreDisplay" type="HBoxContainer" parent="HUD"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -40.0
+offset_right = 150.0
+offset_bottom = -10.0
+
+[node name="Label" type="Label" parent="HUD/ScoreDisplay"]
+text = "SCORE: 0"
+
+[node name="LivesDisplay" type="HBoxContainer" parent="HUD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -40.0
+offset_right = 60.0
+offset_bottom = -10.0
+grow_horizontal = 2
+
+[node name="Hearts" type="HBoxContainer" parent="HUD/LivesDisplay"]

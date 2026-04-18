@@ -1,0 +1,51 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Godot
+        uses: barolo拿去/use-godot@v4
+        with:
+          godot-version: 4.2.stable
+
+      - name: Get Export Templates
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates/4.2.stable/
+          godot --headless --export-templates /tmp/templates.tpz
+          unzip -o /tmp/templates.tpz -d ~/.local/share/godot/export_templates/
+
+      - name: Export HTML5
+        run: |
+          godot --headless --export-release "HTML5" build/index.html
+
+      - name: Validate Build
+        run: |
+          test -f build/index.html
+          SIZE=$(stat -c%s build/index.html)
+          if [ "$SIZE" -lt 10000 ]; then exit 1; fi
+          echo "Build size: $SIZE bytes"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/
+
+  post-deploy:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Deploy confirmation
+        run: |
+          echo "✅ Ken Bus Adventure deployed to GitHub Pages"
