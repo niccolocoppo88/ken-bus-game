@@ -475,7 +475,7 @@ function drawBus() {
     ctx.stroke();
   }
 
-  // Bus body (yellow)
+  // Bus body (yellow school bus)
   const isDoubleDeck = doubleDeckTimer > 0;
   const totalH = isDoubleDeck ? bh * 1.5 : bh;
 
@@ -497,6 +497,14 @@ function drawBus() {
     ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.strokeRect(bx, by, bw, bh);
   }
 
+  // School bus black stripe (characteristic)
+  ctx.fillStyle = '#222';
+  ctx.fillRect(bx, by + bh * 0.38, bw, bh * 0.12);
+  // SCHOOL BUS text on front
+  ctx.fillStyle = '#000';
+  ctx.font = 'bold 6px Arial';
+  ctx.fillText('SCHOOL BUS', bx + 5, by + bh * 0.47);
+
   // Windows
   ctx.fillStyle = '#aaddff';
   for (let i = 0; i < 3; i++) {
@@ -509,19 +517,35 @@ function drawBus() {
   ctx.fillRect(bx + bw - 28, by + 8, 22, 15);
   ctx.strokeRect(bx + bw - 28, by + 8, 22, 15);
 
-  // Ken in window
+  // Ken in window - BIGGER and recognizable
   const kenX = bx + 38;
-  const kenY = by + 10;
-  ctx.fillStyle = '#000';
+  const kenY = by + 8;
+  // Head - bigger and visible
+  ctx.fillStyle = '#ffcc99';
   ctx.beginPath();
-  ctx.arc(kenX, kenY, 5, 0, Math.PI * 2);
+  ctx.arc(kenX, kenY, 8, 0, Math.PI * 2);
   ctx.fill();
-  // Headband
+  ctx.strokeStyle = '#000'; ctx.lineWidth = 1.5; ctx.stroke();
+  // Red hair (Hokuto style)
+  ctx.fillStyle = '#dd2200';
+  ctx.beginPath(); ctx.arc(kenX, kenY - 3, 8, Math.PI, 0); ctx.fill();
+  // Headband (iconic red)
   ctx.fillStyle = '#ff0000';
-  ctx.fillRect(kenX - 6, kenY - 3, 12, 4);
-  // Body
-  ctx.fillStyle = '#ff3333';
-  ctx.fillRect(kenX - 4, kenY + 5, 8, 8);
+  ctx.fillRect(kenX - 9, kenY - 5, 18, 5);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(kenX - 7, kenY - 4, 14, 1);
+  // Eyes
+  ctx.fillStyle = '#000';
+  ctx.beginPath(); ctx.arc(kenX - 3, kenY, 2, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(kenX + 3, kenY, 2, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.arc(kenX - 2, kenY - 1, 0.8, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(kenX + 4, kenY - 1, 0.8, 0, Math.PI * 2); ctx.fill();
+  // Determined smile
+  ctx.beginPath(); ctx.arc(kenX, kenY + 3, 2.5, 0, Math.PI); ctx.strokeStyle = '#000'; ctx.lineWidth = 1; ctx.stroke();
+  // Body (red martial arts suit)
+  ctx.fillStyle = '#cc0000';
+  ctx.fillRect(kenX - 5, kenY + 7, 10, 10);
 
   // Wheels
   ctx.fillStyle = '#222';
@@ -549,44 +573,50 @@ function drawBus() {
 }
 
 // === KID SPRITE ===
-// === KID SPRITE (cute round kid) ===
+// === KID SPRITE (cute round kid with ANIMATED arms) ===
 function drawKid(k) {
   const bob = Math.sin(k.bobOffset || 0) * 3;
+  const wave = Math.sin(Date.now() * 0.008 + (k.bobOffset || 0)) * 8; // arm wave animation
   const kx = k.x + 17;
   const ky = k.y + bob;
-  ctx.shadowColor = '#ffff00'; ctx.shadowBlur = 12;
+  // Strong glow for visibility
+  ctx.shadowColor = '#ffcc00'; ctx.shadowBlur = 20;
   // Body (round oval)
   ctx.fillStyle = SCENARIOS[level].palette.kid;
-  ctx.beginPath(); ctx.ellipse(kx, ky + 28, 12, 16, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(kx, ky + 28, 14, 18, 0, 0, Math.PI * 2); ctx.fill();
   ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
   // Head (big round)
   ctx.fillStyle = '#ffdd99';
-  ctx.beginPath(); ctx.arc(kx, ky + 10, 13, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(kx, ky + 10, 15, 0, Math.PI * 2); ctx.fill();
   ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
   // Hair
   ctx.fillStyle = '#553311';
-  ctx.beginPath(); ctx.arc(kx, ky + 5, 13, Math.PI, 0); ctx.fill();
-  // Hair bows
+  ctx.beginPath(); ctx.arc(kx, ky + 5, 15, Math.PI, 0); ctx.fill();
+  // Hair bows (pink, cute)
   ctx.fillStyle = '#ff4488';
-  ctx.beginPath(); ctx.arc(kx - 10, ky + 3, 4, 0, Math.PI * 2); ctx.fill();
-  ctx.beginPath(); ctx.arc(kx + 10, ky + 3, 4, 0, Math.PI * 2); ctx.fill();
-  // Eyes
+  ctx.beginPath(); ctx.arc(kx - 12, ky + 2, 5, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(kx + 12, ky + 2, 5, 0, Math.PI * 2); ctx.fill();
+  // Eyes (bigger, cuter)
   ctx.fillStyle = '#000';
-  ctx.beginPath(); ctx.arc(kx - 4, ky + 10, 3, 0, Math.PI * 2); ctx.fill();
-  ctx.beginPath(); ctx.arc(kx + 4, ky + 10, 3, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(kx - 5, ky + 10, 3.5, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(kx + 5, ky + 10, 3.5, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = '#fff';
-  ctx.beginPath(); ctx.arc(kx - 3, ky + 9, 1, 0, Math.PI * 2); ctx.fill();
-  ctx.beginPath(); ctx.arc(kx + 5, ky + 9, 1, 0, Math.PI * 2); ctx.fill();
-  // Smile
-  ctx.beginPath(); ctx.arc(kx, ky + 13, 4, 0, Math.PI); ctx.strokeStyle = '#000'; ctx.lineWidth = 1; ctx.stroke();
-  // Arms waving
-  ctx.strokeStyle = '#ffdd99'; ctx.lineWidth = 4;
-  ctx.beginPath(); ctx.moveTo(kx - 12, ky + 25); ctx.lineTo(kx - 20, ky + 18); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(kx + 12, ky + 25); ctx.lineTo(kx + 20, ky + 18); ctx.stroke();
+  ctx.beginPath(); ctx.arc(kx - 4, ky + 9, 1.2, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(kx + 6, ky + 9, 1.2, 0, Math.PI * 2); ctx.fill();
+  // Blush
+  ctx.fillStyle = 'rgba(255,150,150,0.5)';
+  ctx.beginPath(); ctx.ellipse(kx - 9, ky + 13, 4, 2, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(kx + 9, ky + 13, 4, 2, 0, 0, Math.PI * 2); ctx.fill();
+  // Smile (bigger)
+  ctx.beginPath(); ctx.arc(kx, ky + 14, 5, 0, Math.PI); ctx.strokeStyle = '#000'; ctx.lineWidth = 1.5; ctx.stroke();
+  // ANIMATED arms waving up
+  ctx.strokeStyle = '#ffdd99'; ctx.lineWidth = 5;
+  ctx.beginPath(); ctx.moveTo(kx - 13, ky + 26); ctx.lineTo(kx - 22, ky + 14 + wave); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(kx + 13, ky + 26); ctx.lineTo(kx + 22, ky + 14 - wave); ctx.stroke();
   // Legs
-  ctx.strokeStyle = '#553311'; ctx.lineWidth = 4;
-  ctx.beginPath(); ctx.moveTo(kx - 5, ky + 42); ctx.lineTo(kx - 6, ky + 52); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(kx + 5, ky + 42); ctx.lineTo(kx + 6, ky + 52); ctx.stroke();
+  ctx.strokeStyle = '#553311'; ctx.lineWidth = 5;
+  ctx.beginPath(); ctx.moveTo(kx - 5, ky + 44); ctx.lineTo(kx - 7, ky + 54); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(kx + 5, ky + 44); ctx.lineTo(kx + 7, ky + 54); ctx.stroke();
   ctx.shadowBlur = 0;
 }
 // === OBSTACLES ===
