@@ -9,15 +9,15 @@
 
 | # | Task | Status | Assignee | Criteri Done | Dep |
 |---|------|--------|----------|---------------|-----|
-| 1 | Refinements grafiche (kids, Ken, bus) | TODO | Thomas | Kids look cute, Ken visible, bus looks real | - |
-| 2 | Level transition fix | TODO | Thomas | Level 2 arriva dopo 8 kids, non timer | - |
+| 1 | Refinements grafiche (kids, Ken, bus) | **In Progress** | Thomas | Kids look cute, Ken visible, bus looks real | Template: `docs/TASK_001_REFACTOR_GRAFICHE.md` |
+| 2 | Level transition fix | TODO | Thomas | Level 2 arriva dopo 8 kids, non timer | 1 |
 | 3 | QA finale prima di shipping | TODO | Goksu | QA visivo passato su Chrome | Refinements |
 
 ---
 
 ## Come aggiornare questo file
 
-1. Quando inizi un task → camba status in "In Progress" + aggiungi data
+1. Quando inizi un task → cambia status in "In Progress" + aggiungi data
 2. Quando finisci → status "Done" + data completamento
 3. Dopo ogni milestone → aggiorna in GitHub
 
@@ -28,4 +28,5 @@
 | Data | Chi | Cosa |
 |------|-----|------|
 | 2026-04-19 | Elisa | Creato TASKS.md — Linear rimosso |
-
+| 2026-04-19 | Thomas | Aggiunto index.html source a main (commit ae79519) |
+| 2026-04-19 | Thomas | Creato docs/TASK_001_REFACTOR_GRAFICHE.md — Partito su refinements |
