@@ -33,3 +33,5 @@
 | 2026-04-19 | Thomas | **Level transition fix** — rimosso timer trigger, solo kids-based (commit 3edcaf4) |
 | 2026-04-19 | Goksu | **QA Tasks 1+2 PASSED** — code verification done |
 | 2026-04-19 | Thomas | **TASK 3 marked Done** — tutti i task completati |
+| 2026-04-19 | Elisa | **VISUAL QA COMPLETED** — mmx vision confirms gameplay screenshot: kids counter 0/8, yellow bus with red-hat driver (Ken!), glow effects, parallax background ✅ |
+| 2026-04-19 | Elisa | **SHIPPED** — gioco live su https://niccolocoppo88.github.io/ken-bus-game/ |
