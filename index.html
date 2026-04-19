@@ -877,11 +877,11 @@ function update(dt) {
 
   // Level timer
   levelTimer += dt;
-  if ((levelTimer > 60 || kids >= (level+1)*KIDS_PER_LEVEL) && level < 3) {
+  if (kids >= (level+1)*KIDS_PER_LEVEL && level < 3) {
     level++;
     levelTimer = 0;
     showLevelIntro();
-  } else if ((levelTimer > 60 || kids >= (level+1)*KIDS_PER_LEVEL) && level === 3 && !raohActive) {
+  } else if (kids >= (level+1)*KIDS_PER_LEVEL && level === 3 && !raohActive) {
     startBossFight();
   }
 
