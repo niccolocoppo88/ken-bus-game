@@ -10,7 +10,7 @@
 | # | Task | Status | Assignee | Criteri Done | Dep |
 |---|------|--------|----------|---------------|-----|
 | 1 | Refinements grafiche (kids, Ken, bus) | **Done** | Thomas | Kids glow visibile, Ken riconoscibile, bus look scuolabus ✅ | Template: `docs/TASK_001_REFACTOR_GRAFICHE.md` |
-| 2 | Level transition fix | TODO | Thomas | Level 2 arriva dopo 8 kids, non timer | 1 |
+| 2 | Level transition fix | **Done** | Thomas | Level avanza solo con kids raccolti, no timer ✅ | 1 |
 | 3 | QA finale prima di shipping | TODO | Goksu | QA visivo passato su Chrome | Refinements |
 
 ---
@@ -30,3 +30,4 @@
 | 2026-04-19 | Elisa | Creato TASKS.md — Linear rimosso |
 | 2026-04-19 | Thomas | Aggiunto index.html source a main (commit ae79519) |
 | 2026-04-19 | Thomas | **Refinements completati** — kids glow+animation, Ken visible, school bus stripes (commit 1f6b029) |
+| 2026-04-19 | Thomas | **Level transition fix** — rimosso timer trigger, solo kids-based (commit 3edcaf4) |
