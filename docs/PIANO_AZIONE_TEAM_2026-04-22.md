@@ -1,6 +1,58 @@
 # PIANO AZIONE TEAM — Ken Bus Adventure
-**Versione:** 2.0 (aggiornata da retro 2026-04-22)
+**Versione:** 3.0 (aggiornata da retro 2026-04-22)
 **Team:** Elisa (PO+PM+Coordinatrice), Thomas (Coder), Goksu (QA), Nico (Decision Maker)
+
+---
+
+## 🎯 Vision & Goals
+
+**Obiettivo finale:** Shippare un gioco HTML5 Canvas funzionante, godibile, riproducibile.
+
+**Regole fondamentali del planning:**
+1. **Un brief chiaro vale 100 domande** — più dettagli nel brief, meno confusione dopo
+2. **Scope creep is the enemy** — un task alla volta, un цель per milestone
+3. **"Done" significa shipped, non "codice scritto"** — ogni task non è completo finché non è su GitHub Pages
+4. **Priorità > tutto il resto** — se tutto è priorità, niente è priorità. Nico decide.
+
+---
+
+## 📋 Principi Project Management
+
+### Prima di ogni task
+- [ ] **Brief scritto** — chi, cosa, perché, deadline (se c'è)
+- [ ] **Vincoli tecnologici espliciti** — cosa può fare il team, cosa no (es. sandbox CLI senza browser)
+- [ ] **Definition of Done** — come si verifica che il task è completo?
+- [ ] **Dependences** — chi dipende da chi? Che blocking può esserci?
+
+### Durante il task
+- [ ] **Git pull all'inizio** — sempre, non esiste "tanto è aggiornato"
+- [ ] **Checkpoint intermedi** — se un task è lungo, aggiornare il team con status
+- [ ] **Blocker reporting immediato** — se qualcosa è bloccato, dirlo SUBITO, non alla fine
+
+### Dopo il task
+- [ ] **Code QA** — Goksu verifica che il codice è corretto
+- [ ] **Visual QA** — screenshot o playtest quando richiesto
+- [ ] **TASKS.md aggiornato** — status + data completamento
+- [ ] **Deploy** — push su gh-pages, conferma funziona
+
+---
+
+## 📊 Governance
+
+### Decisioni bloccanti
+- **Nico** ha sempre l'ultima parola su priorità e direction
+- Se Thomas o Goksu non sono d'accordo con un brief, lo dicono PRIMA di iniziare
+- Elisa può mediare ma non overridare Nico
+
+### Cadenza comunicazione
+- **Notifiche async** per tutto non-urgent tramite Discord thread
+- **Urgenza** = mention diretto su Discord, non sessions_send
+- **No escalation senza tentativo** — se non rispondi dopo 30 min, pinga di nuovo
+
+###Scope & Priorità
+- Nuove richieste -> Elisa crea TASK_TEMPLATE.md -> Nico approva -> Team lavora
+- Mai iniziare lavoro senza approvazione di Nico
+- "Quick fix" non esiste -> sempre TASK_TEMPLATE.md, anche per bug fix
 
 ---
 
