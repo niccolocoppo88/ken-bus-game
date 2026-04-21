@@ -9,6 +9,7 @@
 | Ruolo | Persona | Responsabilità |
 |-------|---------|----------------|
 | PO + PM + Coordinatrice | Elisa | Brief, task creation, priorità, coordinamento |
+| Architect | Piotr | Architecture decisions, technical reviews |
 | Coder | Thomas | Implementazione feature, commit, push |
 | QA | Goksu | Code QA, visual QA, verification |
 | Decision Maker | Nico | Approvazioni finali, fix/blocchi, direction |
@@ -20,8 +21,14 @@
 ## 🔄 Pipeline Standard
 
 ```
-Brief (Elisa) → TASK_TEMPLATE.md → Implementazione (Thomas) → Code QA (Goksu) → Visual QA (Elisa/Goksu) → Deploy (Elisa)
+Brief (Elisa) → TASK_TEMPLATE.md → Architecture Review (Piotr, se complesso) → Implementazione (Thomas) → Code QA (Goksu) → Visual QA (Elisa/Goksu) → Deploy (Elisa)
 ```
+
+### Quando coinvolgere Piotr
+- Task complessi con refactoring architetturale
+- Nuove feature che richiedono cambi strutturali
+- Fix per problemi di performance o scalability
+- NON serve per: bug fix semplici, refactor grafici, QA tasks
 
 ### Step dettagliato
 
