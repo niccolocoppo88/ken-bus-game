@@ -119,13 +119,26 @@ window.addEventListener('resize', resize);
 
 // === AUDIO ===
 let audioCtx;
-// YouTube IFrame API for background music
 let ytPlayer = null;
+let currentMusic = 'toughboy'; // 'toughboy' or 'raoh'
+
+const YTMUSIC = {
+  toughboy: '2Y2VzSY1HIg',  // Tough Boy Opening
+  raoh: 'oF4JrSOqJfk'        // Raoh Ending Theme (epic villain theme)
+};
+
+function setMusic(track) {
+  if (!ytPlayer || !ytPlayer.loadVideoById) return;
+  currentMusic = track;
+  ytPlayer.loadVideoById({ videoId: YTMUSIC[track], suggestedQuality: 'small' });
+  ytPlayer.setVolume(35);
+}
+
 window.onYouTubeIframeAPIReady = function() {
   ytPlayer = new YT.Player('ytPlayer', {
-    videoId: 'bYbN2nyuN9Y',
-    playerVars: { autoplay: 1, loop: 1, playlist: 'bYbN2nyuN9Y', controls: 0, showinfo: 0, rel: 0, modestbranding: 1, autoplay: 1 },
-    events: { onReady: function(e) { e.target.setVolume(35); e.target.playVideo(); } }
+    videoId: YTMUSIC.toughboy,
+    playerVars: { autoplay: 0, loop: 1, playlist: YTMUSIC.toughboy, controls: 0, showinfo: 0, rel: 0, modestbranding: 1 },
+    events: { onReady: function(e) { e.target.setVolume(35); } }
   });
 }
 function loadYTAPI() {
@@ -1137,6 +1150,7 @@ function startBossFight() {
   kids_list = []; obstacles = []; powerups = [];
   kidsSpawnTimer = 9999; obstacleSpawnTimer = 9999; powerupSpawnTimer = 9999;
   raohActive = true;
+  setMusic('raoh');
   raohHP = 3;
   raohPhase = 1;
   raohX = W - 200;
@@ -1707,6 +1721,7 @@ function startGame() {
   scrollPos = 0;
   raohActive = false; raohHP = 3; raohProjectiles = []; bossParticles = [];
   raohPhase = 1; raohFlashTimer = 0; bossIntroTimer = 0;
+  if (ytPlayer && ytPlayer.loadVideoById) setMusic('toughboy');
 
   document.getElementById('titleScreen').style.display = 'none';
   document.getElementById('gameover').style.display = 'none';
@@ -1735,8 +1750,10 @@ document.getElementById('avvia').addEventListener('click', startGame);
 document.getElementById('musicBtn').addEventListener('click', function() {
   if (!ytPlayer) {
     loadYTAPI();
-    setTimeout(function() { if (ytPlayer && ytPlayer.playVideo) ytPlayer.playVideo(); }, 2000);
-  } else if (ytPlayer.playVideo) {
+    setTimeout(function() { if (ytPlayer && ytPlayer.playVideo) ytPlayer.playVideo(); }, 1500);
+  } else if (ytPlayer.getPlayerState && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+    ytPlayer.pauseVideo();
+  } else {
     ytPlayer.playVideo();
   }
 });
@@ -1751,7 +1768,7 @@ requestAnimationFrame(function titleLoop(t) {
   requestAnimationFrame(titleLoop);
 });
 </script>
-<!-- YouTube Background Music - Replace bYbN2nyuN9Y with actual YouTube video ID for Tough Boy
-<div id="ytPlayer"></div>
+<!-- YouTube Background Music -->
+<div id="ytPlayer" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"></div>
 </body>
 </html>
