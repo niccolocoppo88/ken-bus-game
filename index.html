@@ -120,7 +120,8 @@ window.addEventListener('resize', resize);
 // === AUDIO ===
 let audioCtx;
 let ytPlayer = null;
-let currentMusic = 'toughboy'; // 'toughboy' or 'raoh'
+let currentMusic = 'toughboy';
+let ytMusicPlaying = false;
 
 const YTMUSIC = {
   toughboy: '2Y2VzSY1HIg',  // Tough Boy Opening
@@ -132,6 +133,7 @@ function setMusic(track) {
   currentMusic = track;
   ytPlayer.loadVideoById({ videoId: YTMUSIC[track], suggestedQuality: 'small' });
   ytPlayer.setVolume(35);
+  ytMusicPlaying = true;
 }
 
 window.onYouTubeIframeAPIReady = function() {
@@ -1748,13 +1750,18 @@ function restartGame() {
 // Button events
 document.getElementById('avvia').addEventListener('click', startGame);
 document.getElementById('musicBtn').addEventListener('click', function() {
-  if (!ytPlayer) {
+  if (!ytPlayer || !ytPlayer.getPlayerState) {
     loadYTAPI();
-    setTimeout(function() { if (ytPlayer && ytPlayer.playVideo) ytPlayer.playVideo(); }, 1500);
-  } else if (ytPlayer.getPlayerState && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
-    ytPlayer.pauseVideo();
+    setTimeout(function() { if (ytPlayer && ytPlayer.playVideo) { ytPlayer.playVideo(); ytMusicPlaying = true; } }, 1500);
   } else {
-    ytPlayer.playVideo();
+    var state = ytPlayer.getPlayerState();
+    if (state === YT.PlayerState.PLAYING) {
+      ytPlayer.pauseVideo();
+      ytMusicPlaying = false;
+    } else {
+      ytPlayer.playVideo();
+      ytMusicPlaying = true;
+    }
   }
 });
 document.getElementById('riprova').addEventListener('click', restartGame);
