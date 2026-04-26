@@ -1,0 +1,82 @@
+name: CI Checks
+
+on:
+  push:
+    branches: [main, gh-pages]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-js:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate JS syntax and brace balance
+        run: |
+          # Extract JS from index.html
+          python3 << 'EOF'
+          import re
+          import sys
+
+          with open('index.html', 'r') as f:
+              content = f.read()
+
+          # Extract script content
+          match = re.search(r'<script>(.*?)</script>', content, re.DOTALL)
+          if not match:
+              print("ERROR: No <script> tag found")
+              sys.exit(1)
+
+          js_code = match.group(1)
+
+          # Count braces (excluding those in strings)
+          clean = re.sub(r'"[^"]*"', '', js_code)
+          clean = re.sub(r"'[^']*'", '', clean)
+          clean = re.sub(r'//.*', '', clean)
+          clean = re.sub(r'/\*.*?\*/', '', clean, flags=re.DOTALL)
+
+          opens = clean.count('{')
+          closes = clean.count('}')
+
+          print(f"Brace count: {opens} open, {closes} close, diff={opens-closes}")
+
+          if opens != closes:
+              print(f"ERROR: Unbalanced braces! {opens} open vs {closes} close")
+              sys.exit(1)
+
+          print("Brace balance: OK ✅")
+
+          # Write extracted JS for syntax check
+          with open('extracted.js', 'w') as f:
+              f.write(js_code)
+          EOF
+
+      - name: Check JS syntax with Node
+        run: |
+          node --check extracted.js 2>&1 || { echo "Syntax error detected!"; exit 1; }
+          echo "JS syntax: OK ✅"
+
+  check-branch-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check main and gh-pages are in sync
+        run: |
+          MAIN_SHA=$(git rev-parse origin/main)
+          GHPAGES_SHA=$(git rev-parse origin/gh-pages 2>/dev/null || echo "none")
+
+          echo "Main SHA:  $MAIN_SHA"
+          echo "Gh-pages SHA: $GHPAGES_SHA"
+
+          if [ "$GHPAGES_SHA" != "none" ] && [ "$MAIN_SHA" != "$GHPAGES_SHA" ]; then
+              echo "WARNING: main and gh-pages are out of sync!"
+              echo "This check is informational only."
+          else
+              echo "Branches are in sync ✅"
+          fi
