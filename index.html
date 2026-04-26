@@ -905,7 +905,8 @@ function update(dt) {
   if (keysDown["ArrowUp"] || keysDown["KeyW"]) bus.vy = -spd * dt * 1.5;
   if (keysDown["ArrowDown"] || keysDown["KeyS"]) bus.vy = spd * dt * 1.5;
   bus.y += bus.vy;
-  bus.y = Math.max(H * 0.47, Math.min(H * 0.65, bus.y));
+  bus.y = Math.max(H * 0.47, Math.min(H * 0.72, bus.y));
+
 
 
   // Punch timers
@@ -1185,7 +1186,8 @@ function updateBossFight(dt) {
   if (keysDown["ArrowUp"] || keysDown["KeyW"]) bus.vy = -spd * dt * 1.5;
   if (keysDown["ArrowDown"] || keysDown["KeyS"]) bus.vy = spd * dt * 1.5;
   bus.y += bus.vy;
-  bus.y = Math.max(H * 0.47, Math.min(H * 0.65, bus.y));
+  bus.y = Math.max(H * 0.47, Math.min(H * 0.72, bus.y));
+
 
   // Punch timers
   if (punchActive) {
