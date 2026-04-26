@@ -73,7 +73,7 @@ canvas{display:block;width:100%;height:100%}
 <button id="avvia">AVVIA</button>
 <button id="musicBtn" style="background:#222;color:#ffcc00;border:4px solid #000;padding:12px 30px;font-size:clamp(12px,2.5vw,18px);font-weight:bold;cursor:pointer;text-transform:uppercase;letter-spacing:2px;box-shadow:3px 3px 0 #000;margin-top:15px">🔊 TOUGH BOY</button>
 <div id="istruzioni">
-<span id="deskInstr">↑↓ o W/S: muovi &nbsp;|&nbsp; SPAZIO o CLIC: pugno &nbsp;|&nbsp; ESC: pausa</span>
+<span id="deskInstr">←→ o A/D: muovi dx/sx &nbsp;|&nbsp; ↑↓ o W/S: muovi su/giù &nbsp;|&nbsp; SPAZIO o CLIC: pugno &nbsp;|&nbsp; ESC: pausa</span>
 <span id="mobInstr" style="display:none">Swipe su/giù: muovi &nbsp;|&nbsp; Doppio tap: pugno</span>
 </div>
 </div>
@@ -184,7 +184,7 @@ let level = 0; // 0-3
 let levelTimer = 0;
 const LEVEL_DURATION = 180;
 const KIDS_PER_LEVEL = 8;
-let bus = { x: 160, y: 0, vy: 0, width: 90, height: 50 };
+let bus = { x: 160, y: 0, vx: 0, vy: 0, width: 90, height: 50 };
 let punchActive = false, punchTimer = 0, punchCooldown = 0;
 let wasCooldown = false;
 const PUNCH_DURATION = 400, PUNCH_COOLDOWN = 1500;
@@ -902,10 +902,15 @@ function update(dt) {
 
   const spd = (turboTimer > 0) ? 500 : 280;
   bus.vy = 0;
+  bus.vx = 0;
   if (keysDown["ArrowUp"] || keysDown["KeyW"]) bus.vy = -spd * dt * 1.5;
   if (keysDown["ArrowDown"] || keysDown["KeyS"]) bus.vy = spd * dt * 1.5;
+  if (keysDown["ArrowLeft"] || keysDown["KeyA"]) bus.vx = -spd * dt * 1.2;
+  if (keysDown["ArrowRight"] || keysDown["KeyD"]) bus.vx = spd * dt * 1.2;
   bus.y += bus.vy;
+  bus.x += bus.vx;
   bus.y = Math.max(H * 0.47, Math.min(H * 0.72, bus.y));
+  bus.x = Math.max(20, Math.min(W * 0.55, bus.x));
 
 
 
@@ -1183,10 +1188,15 @@ function updateBossFight(dt) {
 
   const spd = (turboTimer > 0) ? 500 : 280;
   bus.vy = 0;
+  bus.vx = 0;
   if (keysDown["ArrowUp"] || keysDown["KeyW"]) bus.vy = -spd * dt * 1.5;
   if (keysDown["ArrowDown"] || keysDown["KeyS"]) bus.vy = spd * dt * 1.5;
+  if (keysDown["ArrowLeft"] || keysDown["KeyA"]) bus.vx = -spd * dt * 1.2;
+  if (keysDown["ArrowRight"] || keysDown["KeyD"]) bus.vx = spd * dt * 1.2;
   bus.y += bus.vy;
+  bus.x += bus.vx;
   bus.y = Math.max(H * 0.47, Math.min(H * 0.72, bus.y));
+  bus.x = Math.max(20, Math.min(W * 0.55, bus.x));
 
 
   // Punch timers
@@ -1204,6 +1214,7 @@ function updateBossFight(dt) {
 
   // Raoh movement
   const raohSpeed = (raohPhase === 2) ? 4 : 2;
+  const raohHorizontalSpeed = (raohPhase === 2) ? 2.5 : 1.5;
   raohVy = (raohPhase === 2) ? (Math.sin(Date.now() * 0.01) * raohSpeed) : raohVy;
   if (raohPhase === 1) {
     if (raohY <= H * 0.2) raohVy = 2;
@@ -1211,6 +1222,12 @@ function updateBossFight(dt) {
   }
   raohY += raohVy * 60 * dt;
   raohY = Math.max(H * 0.1, Math.min(H * 0.8, raohY));
+  // Raoh moves left/right (oscillates toward bus)
+  const raohCenterX = raohX + 60;
+  const targetX = bus.x + bus.width + 80;
+  raohX += (targetX - raohCenterX) * raohHorizontalSpeed * dt * 0.5;
+  raohX += Math.sin(Date.now() * 0.003) * 1.5;
+  raohX = Math.max(W * 0.4, Math.min(W - 140, raohX));
 
   // Raoh shooting
   raohShootTimer -= dt;
@@ -1715,7 +1732,7 @@ function startGame() {
   initAudio();
   score = 0; kids = 0; lives = 3;
   level = 0; levelTimer = 0;
-  bus.y = H * 0.72 - bus.height; bus.vy = 0;
+  bus.y = H * 0.72 - bus.height; bus.vy = 0; bus.vx = 0;
   punchActive = false; punchTimer = 0; punchCooldown = 0;
   screenShake = 0;
   popups = [];
