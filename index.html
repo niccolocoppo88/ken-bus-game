@@ -334,27 +334,64 @@ function drawBackground(scenario, scroll) {
           ctx.fillRect(bldgX + 8, bldgY + 13, 34, 12);
         }
       }
-    } else if (level === 1) { // School
-      ctx.fillRect(bx + 50, H * 0.3 - 100, 200, 100);
+    } else if (level === 1) { // School — pixel art brick building
+      // Main building — brick pixel pattern
+      const brickH = 8, brickW = 16;
+      for (let py = 0; py < 100; py += brickH) {
+        const offset = (Math.floor(py / brickH) % 2) * (brickW / 2);
+        for (let px = 0; px < 200; px += brickW) {
+          const shade = (py + px) % 32;
+          ctx.fillStyle = shade < 8 ? '#aa7722' : shade < 16 ? '#cc9933' : '#ddaa44';
+          ctx.fillRect(bx + 50 + px + offset, H * 0.3 - 100 + py, brickW - 2, brickH - 2);
+        }
+      }
       ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.strokeRect(bx + 50, H * 0.3 - 100, 200, 100);
+      // Windows with curtains
+      for (let wy = 20; wy < 80; wy += 30) {
+        for (let wx = 20; wx < 180; wx += 50) {
+          ctx.fillStyle = '#88ccff'; ctx.fillRect(bx + 50 + wx, H * 0.3 - 100 + wy, 30, 20);
+          ctx.fillStyle = '#ffccaa'; ctx.fillRect(bx + 50 + wx, H * 0.3 - 100 + wy, 30, 6); // curtain top
+        }
+      }
+      // Bell tower
+      for (let py = 0; py < 50; py += 8) {
+        const offset = (Math.floor(py / 8) % 2) * 8;
+        for (let px = 0; px < 40; px += 16) {
+          ctx.fillStyle = '#bb9933'; ctx.fillRect(bx + 130 + px + offset, H * 0.3 - 150 + py, 14, 6);
+        }
+      }
+      ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.strokeRect(bx + 130, H * 0.3 - 150, 40, 50);
+      // Clock
+      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(bx + 150, H * 0.3 - 130, 10, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillStyle = '#333'; ctx.fillRect(bx + 147, H * 0.3 - 133, 6, 2); ctx.fillRect(bx + 149, H * 0.3 - 131, 2, 6);
       // Flag
-      ctx.fillStyle = '#ff0000';
-      ctx.fillRect(bx + 240, H * 0.3 - 130, 3, 40);
-      ctx.fillRect(bx + 243, H * 0.3 - 130, 30, 20);
-    } else if (level === 2) { // Forest trees far
+      ctx.fillStyle = '#888888'; ctx.fillRect(bx + 168, H * 0.3 - 155, 3, 60);
+      ctx.fillStyle = '#ff3333'; ctx.fillRect(bx + 171, H * 0.3 - 155, 30, 20);
+      ctx.fillStyle = '#ffcc00'; ctx.fillRect(bx + 181, H * 0.3 - 147, 10, 10);
+    } else if (level === 2) { // Forest trees far — pixel art
       for (let j = 0; j < 5; j++) {
         const tx = bx + j * 80 + 20;
         const th = 120 + (j * 37 % 60);
-        ctx.beginPath();
-        ctx.moveTo(tx, H * 0.35);
-        ctx.lineTo(tx - 25, H * 0.35 - th * 0.4);
-        ctx.lineTo(tx + 25, H * 0.35 - th * 0.4);
-        ctx.closePath();
-        ctx.fillStyle = scenario.bg1;
-        ctx.fill();
-        ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
-        ctx.fillRect(tx - 5, H * 0.35 - th * 0.3, 10, th * 0.3 + 20);
-        ctx.strokeRect(tx - 5, H * 0.35 - th * 0.3, 10, th * 0.3 + 20);
+        // Trunk — pixel brown blocks
+        const trunkH = th * 0.35;
+        for (let py = 0; py < trunkH; py += 8) {
+          const shade = py % 16 < 8 ? '#664422' : '#775533';
+          ctx.fillStyle = shade;
+          ctx.fillRect(tx - 6 + (py % 16 < 8 ? 2 : 0), H * 0.35 - py - 8, 8, 8);
+        }
+        // Foliage — pixel blocks in triangles
+        const foliageY = H * 0.35 - trunkH;
+        const pixel = 12;
+        for (let py = 0; py < th * 0.65; py += pixel) {
+          const rowWidth = Math.floor((th * 0.65 - py) / pixel) * pixel * 0.8;
+          const startX = tx - rowWidth / 2;
+          for (let px = 0; px < rowWidth; px += pixel) {
+            const shade = (py + px) % 24 < 12 ? '#228844' : '#339955';
+            ctx.fillStyle = shade;
+            ctx.fillRect(startX + px, foliageY + py, pixel - 2, pixel - 2);
+          }
+        }
       }
     } else { // Moon craters far
       for (let j = 0; j < 4; j++) {
@@ -379,20 +416,27 @@ function drawBackground(scenario, scroll) {
         ctx.fillRect(bx + j * 130 + 30, H * 0.45 - bh, bw, bh);
         ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.strokeRect(bx + j * 130 + 30, H * 0.45 - bh, bw, bh);
       }
-    } else if (level === 2) {
+    } else if (level === 2) { // Forest mid trees — pixel art
       for (let j = 0; j < 4; j++) {
         const tx = bx + j * 100 + 40;
         const th = 80 + (j * 43 % 50);
-        ctx.beginPath();
-        ctx.moveTo(tx, H * 0.45);
-        ctx.lineTo(tx - 20, H * 0.45 - th * 0.5);
-        ctx.lineTo(tx + 20, H * 0.45 - th * 0.5);
-        ctx.closePath();
-        ctx.fillStyle = scenario.bg2;
-        ctx.fill();
-        ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
+        // Trunk
+        for (let py = 0; py < th * 0.4; py += 6) {
+          ctx.fillStyle = py % 12 < 6 ? '#553311' : '#664422';
+          ctx.fillRect(tx - 4 + (py % 12 < 6 ? 1 : 0), H * 0.45 - py - 6, 6, 6);
+        }
+        // Foliage mid
+        const pixel = 8;
+        const foliageY = H * 0.45 - th * 0.4;
+        for (let py = 0; py < th * 0.6; py += pixel) {
+          const rowWidth = Math.floor((th * 0.6 - py) / pixel) * pixel * 0.6;
+          const startX = tx - rowWidth / 2;
+          for (let px = 0; px < rowWidth; px += pixel) {
+            ctx.fillStyle = (py + px) % 16 < 8 ? '#337744' : '#448855';
+            ctx.fillRect(startX + px, foliageY + py, pixel - 2, pixel - 2);
+          }
+        }
       }
-    }
   }
 
   // Road
@@ -414,17 +458,30 @@ function drawBackground(scenario, scroll) {
   const l1off = (scroll * 0.5) % W;
   for (let i = -1; i < 3; i++) {
     const bx = i * W - l1off;
-    if (level === 2) {
+    if (level === 2) { // Forest near trees — pixel art
       for (let j = 0; j < 3; j++) {
         const tx = bx + j * 180 + 90;
-        ctx.beginPath();
-        ctx.moveTo(tx, roadY);
-        ctx.lineTo(tx - 15, roadY - 60);
-        ctx.lineTo(tx + 15, roadY - 60);
-        ctx.closePath();
-        ctx.fillStyle = scenario.bg3;
-        ctx.fill();
-        ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
+        // Trunk
+        for (let py = 0; py < 50; py += 8) {
+          ctx.fillStyle = py % 16 < 8 ? '#553311' : '#664422';
+          ctx.fillRect(tx - 5 + (py % 16 < 8 ? 2 : 0), roadY - py - 8, 8, 8);
+        }
+        // Foliage near
+        const pixel = 10;
+        const foliageY = roadY - 55;
+        for (let py = 0; py < 55; py += pixel) {
+          const rowWidth = Math.floor((55 - py) / pixel) * pixel * 0.7;
+          const startX = tx - rowWidth / 2;
+          for (let px = 0; px < rowWidth; px += pixel) {
+            ctx.fillStyle = (py + px) % 20 < 10 ? '#227733' : '#338844';
+            ctx.fillRect(startX + px, foliageY + py, pixel - 2, pixel - 2);
+          }
+        }
+        // Fallen leaves on road
+        ctx.fillStyle = '#aa5522';
+        for (let lx = 0; lx < 60; lx += 12) {
+          ctx.fillRect(tx - 30 + lx, roadY + 10 + (lx % 24 < 12 ? 0 : 5), 8, 4);
+        }
       }
     } else if (level === 0) {
       for (let j = 0; j < 3; j++) {
