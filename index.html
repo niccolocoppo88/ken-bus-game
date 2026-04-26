@@ -905,7 +905,7 @@ function update(dt) {
   if (keysDown["ArrowUp"] || keysDown["KeyW"]) bus.vy = -spd * dt * 1.5;
   if (keysDown["ArrowDown"] || keysDown["KeyS"]) bus.vy = spd * dt * 1.5;
   bus.y += bus.vy;
-  bus.y = Math.max(-H * 0.15, Math.min(H * 0.65, bus.y));
+  bus.y = Math.max(H * 0.72 - H * 0.25, Math.min(H * 0.72 - H * 0.08, bus.y));
 
 
   // Punch timers
@@ -1179,12 +1179,13 @@ function updateBossFight(dt) {
   if (state !== 'bossfight') return;
   if (bossIntroTimer > 0) { bossIntroTimer -= dt; return; }
 
+
   const spd = (turboTimer > 0) ? 500 : 280;
   bus.vy = 0;
   if (keysDown["ArrowUp"] || keysDown["KeyW"]) bus.vy = -spd * dt * 1.5;
   if (keysDown["ArrowDown"] || keysDown["KeyS"]) bus.vy = spd * dt * 1.5;
   bus.y += bus.vy;
-  bus.y = Math.max(-H * 0.15, Math.min(H * 0.65, bus.y));
+  bus.y = Math.max(H * 0.72 - H * 0.25, Math.min(H * 0.72 - H * 0.08, bus.y));
 
   // Punch timers
   if (punchActive) {
