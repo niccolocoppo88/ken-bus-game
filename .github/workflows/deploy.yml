@@ -19,8 +19,8 @@ jobs:
       - name: Setup Godot
         run: |
           mkdir -p build
-          echo "<html><body>Ken Bus - placeholder build</body></html>" > build/index.html
-          echo "Build placeholder created"
+          cp index.html build/index.html
+          echo "Build files copied: $(ls -la build/)"
 
       - name: Validate Build
         run: |
