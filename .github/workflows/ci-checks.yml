@@ -60,6 +60,7 @@ jobs:
 
   check-branch-sync:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -75,8 +76,10 @@ jobs:
           echo "Gh-pages SHA: $GHPAGES_SHA"
 
           if [ "$GHPAGES_SHA" != "none" ] && [ "$MAIN_SHA" != "$GHPAGES_SHA" ]; then
-              echo "WARNING: main and gh-pages are out of sync!"
-              echo "This check is informational only."
-          else
-              echo "Branches are in sync ✅"
+              echo "ERROR: main and gh-pages are out of sync!"
+              echo "Main:   $MAIN_SHA"
+              echo "Gh-pages: $GHPAGES_SHA"
+              echo "Fix: git push origin main:gh-pages"
+              exit 1
           fi
+          echo "Branches are in sync ✅"
