@@ -15,7 +15,6 @@ jobs:
 
       - name: Validate JS syntax and brace balance
         run: |
-          # Extract JS from index.html
           python3 << 'EOF'
           import re
           import sys
@@ -23,15 +22,12 @@ jobs:
           with open('index.html', 'r') as f:
               content = f.read()
 
-          # Extract script content
           match = re.search(r'<script>(.*?)</script>', content, re.DOTALL)
           if not match:
-              print("ERROR: No <script> tag found")
-              sys.exit(1)
+            print("ERROR: No <script> tag found")
+            sys.exit(1)
 
           js_code = match.group(1)
-
-          # Count braces (excluding those in strings)
           clean = re.sub(r'"[^"]*"', '', js_code)
           clean = re.sub(r"'[^']*'", '', clean)
           clean = re.sub(r'//.*', '', clean)
@@ -43,12 +39,11 @@ jobs:
           print(f"Brace count: {opens} open, {closes} close, diff={opens-closes}")
 
           if opens != closes:
-              print(f"ERROR: Unbalanced braces! {opens} open vs {closes} close")
-              sys.exit(1)
+            print(f"ERROR: Unbalanced braces! {opens} open vs {closes} close")
+            sys.exit(1)
 
           print("Brace balance: OK ✅")
 
-          # Write extracted JS for syntax check
           with open('extracted.js', 'w') as f:
               f.write(js_code)
           EOF
@@ -83,3 +78,22 @@ jobs:
               exit 1
           fi
           echo "Branches are in sync ✅"
+
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Playwright
+        run: |
+          npm install playwright
+          npx playwright install chromium
+
+      - name: Run smoke test
+        run: node smoke_test_game.js
