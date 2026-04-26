@@ -1181,9 +1181,9 @@ function updateBossFight(dt) {
 
   const spd = (turboTimer > 0) ? 500 : 280;
   bus.vy = 0;
-  if (keysDown["ArrowUp"] || keysDown["KeyW"]) { keysDown["ArrowUp"]=false; keysDown["KeyW"]=false; }
-  if (keysDown["ArrowDown"] || keysDown["KeyS"]) { keysDown["ArrowDown"]=false; keysDown["KeyS"]=false; }
-  bus.y += bus.vy * dt;
+  if (keysDown["ArrowUp"] || keysDown["KeyW"]) bus.vy = -spd * dt * 1.5;
+  if (keysDown["ArrowDown"] || keysDown["KeyS"]) bus.vy = spd * dt * 1.5;
+  bus.y += bus.vy;
   bus.y = Math.max(-H * 0.15, Math.min(H * 0.25, bus.y));
 
   // Punch timers
