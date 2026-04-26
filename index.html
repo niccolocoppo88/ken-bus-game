@@ -281,22 +281,44 @@ function drawBackground(scenario, scroll) {
   ctx.fillStyle = scenario.bg1;
   for (let i = -1; i < 3; i++) {
     const bx = i * W - l3off;
-    if (level === 0) { // City buildings
+    if (level === 0) { // City buildings — improved with neon lights + varied windows
       for (let j = 0; j < 4; j++) {
         const bw = 60 + (j * 31 % 40);
         const bh = 80 + (j * 47 % 120);
-        ctx.fillRect(bx + j * 100, H * 0.35 - bh, bw, bh);
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(bx + j * 100, H * 0.35 - bh, bw, bh);
-        // Windows
-        ctx.fillStyle = '#aaccff';
+        const bldgX = bx + j * 100;
+        const bldgY = H * 0.35 - bh;
+        // Shadow
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.fillRect(bldgX + 8, bldgY + 8, bw, bh);
+        // Building
+        const bldgColors = ['#445566','#556677','#4a5a6a','#3d4d5d','#5c6c7c'];
+        ctx.fillStyle = bldgColors[(j + i) % bldgColors.length];
+        ctx.fillRect(bldgX, bldgY, bw, bh);
+        ctx.strokeStyle = '#1a2a3a'; ctx.lineWidth = 2; ctx.strokeRect(bldgX, bldgY, bw, bh);
+        // Windows with random lit/unlit states
         for (let wy = 0; wy < bh - 20; wy += 20) {
           for (let wx = 5; wx < bw - 10; wx += 15) {
-            ctx.fillRect(bx + j * 100 + wx, H * 0.35 - bh + wy + 5, 8, 12);
+            const lit = ((j * 7 + wy * 3 + wx * 5 + i * 11) % 3) !== 0;
+            if (lit) {
+              const warmLight = ((j * 13 + wy * 7 + wx) % 5) === 0;
+              ctx.fillStyle = warmLight ? '#ffeeaa' : '#aaccff';
+              ctx.fillRect(bldgX + wx, bldgY + wy + 5, 8, 12);
+              // Light glow
+              ctx.fillStyle = warmLight ? 'rgba(255,238,170,0.3)' : 'rgba(170,204,255,0.2)';
+              ctx.fillRect(bldgX + wx - 2, bldgY + wy + 2, 12, 16);
+            } else {
+              ctx.fillStyle = '#222233';
+              ctx.fillRect(bldgX + wx, bldgY + wy + 5, 8, 12);
+            }
           }
         }
-        ctx.fillStyle = scenario.bg1;
+        // Neon sign (some buildings)
+        if ((j + i) % 3 === 0) {
+          ctx.fillStyle = '#ff00ff';
+          ctx.fillRect(bldgX + 10, bldgY + 15, 30, 8);
+          ctx.fillStyle = 'rgba(255,0,255,0.4)';
+          ctx.fillRect(bldgX + 8, bldgY + 13, 34, 12);
+        }
       }
     } else if (level === 1) { // School
       ctx.fillRect(bx + 50, H * 0.3 - 100, 200, 100);
