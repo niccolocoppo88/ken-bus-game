@@ -1661,7 +1661,10 @@ function gameLoop(timestamp) {
     render();
   } else if (state === 'victory') {
     renderBossFight();
-  } else if (state === 'paused' || state === 'levelintro' || state === 'gameover' || state === 'title') {
+  } else if (state === 'levelintro') {
+    // Show level intro overlay + game background behind
+    render();
+  } else if (state === 'paused' || state === 'gameover' || state === 'title') {
     // Draw static frame if not playing
     if (state === 'title' || state === 'gameover') {
       ctx.fillStyle = '#111';
