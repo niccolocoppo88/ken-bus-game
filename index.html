@@ -1742,10 +1742,15 @@ function showReadyFlash() {
   setTimeout(() => f.remove(), 700);
 }
 function startGame() {
-  initAudio();
+  try { initAudio(); } catch(e) { console.warn('initAudio failed:', e); }
   score = 0; kids = 0; lives = 3;
   level = 0; levelTimer = 0;
-  bus.y = H * 0.72 - bus.height; bus.vy = 0; bus.vx = 0;
+  if (typeof H === 'number' && H > 0) {
+    bus.y = H * 0.72 - bus.height;
+  } else {
+    bus.y = window.innerHeight * 0.72 - bus.height;
+  }
+  bus.vy = 0; bus.vx = 0;
   punchActive = false; punchTimer = 0; punchCooldown = 0;
   screenShake = 0;
   popups = [];
