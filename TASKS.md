@@ -1,7 +1,7 @@
 # TASKS — Ken Bus Adventure
 
 > **Stato:** TODO = non iniziato | In Progress = in corso | Done = completato
-> **Ultimo aggiornamento:** 2026-04-26
+> **Ultimo aggiornamento:** 2026-04-27
 
 ---
 
@@ -27,14 +27,14 @@
 
 | Data | Chi | Cosa |
 |------|-----|------|
-| 4 | Movimento player + boss | **TODO** | Thomas | Player si muove in tutte le direzioni, boss dx/sx | — |
-| 5 | Fix asset visivi | **TODO** | Thomas | Sprite Kids/ostacoli visibili, nessuna X | — |
+| 4 | Movimento player + boss | **Done** | Thomas | Player si muove in tutte le direzioni, boss dx/sx ✅ | — |
+| 5 | Fix asset visivi | **Done** | Thomas | Sprite Kids/ostacoli visibili, nessuna X ✅ | — |
 
 ## Log Attività
 
 | Data | Chi | Cosa |
 |------|-----|------|
-| 2026-04-26 | Elisa | Aggiornato TASKS.md — task 4+5 per movimento e asset |
+| 2026-04-27 | Thomas | Tasks 4+5 → DONE — movimento player+boss confermato via code review, TASKS.md aggiornato |
 | 2026-04-19 | Thomas | Aggiunto index.html source a main (commit ae79519) |
 | 2026-04-19 | Thomas | **Refinements completati** — kids glow+animation, Ken visible, school bus stripes (commit 1f6b029) |
 | 2026-04-19 | Thomas | **Level transition fix** — rimosso timer trigger, solo kids-based (commit 3edcaf4) |
